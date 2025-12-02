@@ -6,8 +6,12 @@ use crate::{
 
 pub async fn upload(video: Video) -> Result<Video, MyError> {
     let mut video = video;
-    video.thumbnail = catbox(&video.thumbnail).await?;
-    video.src = gofile(&video.src).await?;
+    if let Some(thumbnail) = video.thumbnail {
+        video.thumbnail = Some(catbox(&thumbnail).await?);
+    }
+    if let Some(src) = video.src {
+        video.src = Some(gofile(&src).await?);
+    }
 
     return Ok(video);
 }

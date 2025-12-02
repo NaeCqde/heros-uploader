@@ -10,7 +10,6 @@ use ntex::{
 pub async fn handle_get_upload(payload: types::Query<Video>) -> Response {
     return handle_upload(payload.0).await;
 }
-
 pub async fn handle_post_upload(payload: types::Json<Video>) -> Response {
     return handle_upload(payload.0).await;
 }

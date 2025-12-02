@@ -24,12 +24,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 types::JsonConfig::default(),
             )
             .route("/", web::get().to(index))
-            .route("/upload", web::get().to(handle_get_upload))
-            .route(
-                "/upload",
-                web::post()
+            .service(
+                web::resource("/upload")
+                    .route(web::get().to(handle_get_upload))
                     .guard(guard::Header("content-type", "application/json"))
-                    .to(handle_post_upload),
+                    .route(web::post().to(handle_post_upload)),
             )
     })
     .workers(env.workers)

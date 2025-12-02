@@ -2,6 +2,10 @@
 name = "heros_uploader"
 version = "0.1.0"
 edition = "2021"
+repository = "https://github.com/NaeCqde/heros-uploader"
+
+[package.metadata.release]
+tag-name = "v{{version}}"
 
 [[bin]]
 name = "heros_uploader"

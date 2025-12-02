@@ -30,8 +30,10 @@ pub fn headers() -> HeaderMap {
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Video {
-    pub thumbnail: String,
-    pub src: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub thumbnail: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub src: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
