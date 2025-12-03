@@ -1,5 +1,6 @@
 use crate::{
     data::{MyError, Video},
+    html::html,
     uploader::upload,
 };
 use ntex::{
@@ -31,5 +32,5 @@ pub async fn handle_upload(payload: Video) -> Response {
 }
 
 pub async fn index() -> impl web::Responder {
-    return "hello, TODO:\nWeb UI";
+    return html();
 }

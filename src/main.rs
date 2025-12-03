@@ -3,6 +3,7 @@ mod data;
 mod env;
 mod gofile;
 mod handler;
+mod html;
 mod uploader;
 
 use crate::handler::{handle_get_upload, handle_post_upload, index};

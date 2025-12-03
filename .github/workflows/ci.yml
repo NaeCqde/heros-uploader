@@ -60,5 +60,7 @@ jobs:
               with:
                   executable-name: heros_uploader
                   target: ${{ matrix.platform.target }}
-                  extra-files: example.env
+                  extra-files: |-
+                    example.env
+                    README.md
               if: matrix.toolchain == 'stable'

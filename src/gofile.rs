@@ -13,14 +13,12 @@ pub async fn gofile(url: &str) -> Result<String, MyError> {
 
     let resp = client.get(url).send().await?;
     if let Some(length) = resp.content_length() {
-        if length > 500 {
+        if length > 1 {
             log::debug!(target: "gofile", "file was fetched");
 
             let mut file_name: String = "video.mp4".to_owned();
             if let Some(last) = url.split("/").last() {
-                if last.contains(".") {
-                    file_name = last.split("?").next().unwrap().to_owned()
-                }
+                file_name = last.split("?").next().unwrap().to_owned()
             }
 
             let acc: Accounts = client
