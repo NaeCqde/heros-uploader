@@ -568,6 +568,7 @@ dependencies = [
  "envy",
  "log",
  "mime",
+ "mime_guess",
  "ntex",
  "percent-encoding",
  "reqwest",

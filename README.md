@@ -14,7 +14,7 @@ GoFile へのアップロード機能では、ファイル名は、提出され�
 
 ## 使い方 & デモサーバー
 
-### Todo：[Web UI：https://heros.nae.quest/](https://heros.nae.quest/)
+### [Web UI：https://heros.nae.quest/](https://heros.nae.quest/)
 
 ## Web API：
 

@@ -1,5 +1,6 @@
 use crate::data::{headers, Accounts, CreateFolder, CreateFolderPayload, MyError, UploadFile};
 use mime::Mime;
+use mime_guess::from_path;
 use reqwest::{
     multipart::{Form, Part},
     Client,
@@ -18,7 +19,9 @@ pub async fn gofile(url: &str) -> Result<String, MyError> {
 
             let mut file_name: String = "video.mp4".to_owned();
             if let Some(last) = url.split("/").last() {
-                file_name = last.split("?").next().unwrap().to_owned()
+                if last != "" {
+                    file_name = last.split("?").next().unwrap().to_owned()
+                }
             }
 
             let acc: Accounts = client
@@ -50,8 +53,8 @@ pub async fn gofile(url: &str) -> Result<String, MyError> {
                     Part::stream(resp.bytes().await?)
                         .file_name(file_name.to_owned())
                         .mime_str(
-                            file_name
-                                .parse::<Mime>()
+                            from_path(file_name)
+                                .first()
                                 .unwrap_or("video/mp4".parse::<Mime>().unwrap())
                                 .essence_str(),
                         )?,

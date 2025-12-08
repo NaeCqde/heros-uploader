@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
     <header>
+        <meta charset="UTF-8" />
         <title>Heros Uploader</title>
         <style>
             input {
@@ -31,13 +32,13 @@
                 <button
                     type="button"
                     class="image-submit"
-                    onclick="upload(event.target, '.image')"
+                    onclick="upload(event.target, 'image')"
                 >
                     画像をアップロード
                 </button>
             </div>
             <div class="image-result">
-                <a href=""></a>
+                <a href="" target="_blank"></a>
                 <br />
                 <img src="" />
             </div>
@@ -55,7 +56,7 @@
                 <button
                     type="button"
                     class="video-submit"
-                    onclick="upload(event.target, '.video')"
+                    onclick="upload(event.target, 'video')"
                 >
                     動画をアップロード
                 </button>
@@ -71,19 +72,18 @@
                 const ctrl = new AbortController();
 
                 const input = document.querySelector(
-                    type === ".image" ? type : ".video"
+                    type === "image" ? "." + type : ".video"
                 );
 
                 if (input.value) {
                     input.oninput = () => ctrl.abort("url is changed");
 
                     try {
-                        // upload
                         const resp = await fetch("/upload", {
                             method: "POST",
                             headers: { "content-type": "application/json" },
                             body: JSON.stringify({
-                                [type === ".image" ? "thumbnail" : "src"]:
+                                [type === "image" ? "thumbnail" : "src"]:
                                     input.value,
                             }),
                             signal: ctrl.signal,
@@ -93,14 +93,14 @@
                             const data = await resp.json();
 
                             const parent = document.querySelector(
-                                (type === ".image" ? type : ".video") +
+                                (type === "image" ? "." + type : ".video") +
                                     "-result"
                             );
                             let url =
-                                data[type === ".image" ? "thumbnail" : "src"];
+                                data[type === "image" ? "thumbnail" : "src"];
                             parent.querySelector("a").href = url;
-                            parent.querySelector("a").textContent = escape(url);
-                            if (type === ".image")
+                            parent.querySelector("a").textContent = url;
+                            if (type === "image")
                                 parent.querySelector("img").src = url;
                         }
                     } catch {}

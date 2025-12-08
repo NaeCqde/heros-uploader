@@ -32,5 +32,5 @@ pub async fn handle_upload(payload: Video) -> Response {
 }
 
 pub async fn index() -> impl web::Responder {
-    return html();
+    return Response::Ok().body(html());
 }
