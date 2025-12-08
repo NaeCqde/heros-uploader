@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <header>
+        <title>Heros Uploader</title>
+        <style>
+            input {
+                width: 100%;
+            }
+            img {
+                width: auto;
+                height: 30%;
+            }
+
+            div:has(> a) {
+                text-align: center;
+            }
+        </style>
+    </header>
+    <body>
+        <h1>Heros Uploader</h1>
+        <div>
+            <div>
+                <input
+                    type="url"
+                    class="image"
+                    name="image"
+                    placeholder="https://nae.quest/pornhub.png"
+                    required
+                />
+                <br />
+                <button
+                    type="button"
+                    class="image-submit"
+                    onclick="upload(event.target, '.image')"
+                >
+                    画像をアップロード
+                </button>
+            </div>
+            <div class="image-result">
+                <a href=""></a>
+                <br />
+                <img src="" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <input
+                    type="url"
+                    class="video"
+                    name="video"
+                    placeholder="https://nae.quest/pornhub.mp4"
+                    required
+                />
+                <br />
+                <button
+                    type="button"
+                    class="video-submit"
+                    onclick="upload(event.target, '.video')"
+                >
+                    動画をアップロード
+                </button>
+            </div>
+            <div class="video-result">
+                <a href="" target="_blank"> </a>
+            </div>
+        </div>
+        <script>
+            async function upload(button, type) {
+                console.log(type);
+                button.setAttribute("disabled", true);
+                const ctrl = new AbortController();
+
+                const input = document.querySelector(
+                    type === ".image" ? type : ".video"
+                );
+
+                if (input.value) {
+                    input.oninput = () => ctrl.abort("url is changed");
+
+                    try {
+                        // upload
+                        const resp = await fetch("/upload", {
+                            method: "POST",
+                            headers: { "content-type": "application/json" },
+                            body: JSON.stringify({
+                                [type === ".image" ? "thumbnail" : "src"]:
+                                    input.value,
+                            }),
+                            signal: ctrl.signal,
+                        });
+
+                        if (resp.ok) {
+                            const data = await resp.json();
+
+                            const parent = document.querySelector(
+                                (type === ".image" ? type : ".video") +
+                                    "-result"
+                            );
+                            let url =
+                                data[type === ".image" ? "thumbnail" : "src"];
+                            parent.querySelector("a").href = url;
+                            parent.querySelector("a").textContent = escape(url);
+                            if (type === ".image")
+                                parent.querySelector("img").src = url;
+                        }
+                    } catch {}
+                } else {
+                    console.log("skipped");
+                }
+
+                button.removeAttribute("disabled");
+                input.oninput = null;
+            }
+        </script>
+    </body>
+</html>

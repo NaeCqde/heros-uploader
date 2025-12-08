@@ -1,3 +1,4 @@
+
 pub fn html() -> &'static str {
-    "hello, TODO:\nWeb UI"
+    return include_str!("index.html")
 }
