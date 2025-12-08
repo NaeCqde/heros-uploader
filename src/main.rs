@@ -16,8 +16,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     let env = env::load().expect("load env failure");
-
     let mut set = JoinSet::new();
+
     let server = HttpServer::new(|| {
         web::App::new()
             .state(
@@ -36,6 +36,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     .workers(env.workers)
     .bind((env.host.to_owned(), env.port))
     .expect("failed to bind port");
+
     set.spawn(server.run());
 
     loop {

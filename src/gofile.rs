@@ -5,6 +5,7 @@ use reqwest::{
     multipart::{Form, Part},
     Client,
 };
+use std::str::FromStr;
 
 pub async fn gofile(url: &str) -> Result<String, MyError> {
     let client = Client::builder()
@@ -55,7 +56,7 @@ pub async fn gofile(url: &str) -> Result<String, MyError> {
                         .mime_str(
                             from_path(file_name)
                                 .first()
-                                .unwrap_or("video/mp4".parse::<Mime>().unwrap())
+                                .unwrap_or(Mime::from_str("video/mp4").unwrap())
                                 .essence_str(),
                         )?,
                 );

@@ -3,6 +3,7 @@ use crate::{
     html::html,
     uploader::upload,
 };
+use mime::TEXT_HTML_UTF_8;
 use ntex::{
     http::Response,
     web::{self, types},
@@ -32,5 +33,7 @@ pub async fn handle_upload(payload: Video) -> Response {
 }
 
 pub async fn index() -> impl web::Responder {
-    return Response::Ok().body(html());
+    return Response::Ok()
+        .content_type(TEXT_HTML_UTF_8.essence_str())
+        .body(html());
 }
