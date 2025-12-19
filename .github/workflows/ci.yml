@@ -5,10 +5,6 @@ permissions:
 
 on:
     push:
-        branches:
-            - "**"
-        tags-ignore:
-            - "heros_uploader-*"
     pull_request:
 
 env:
@@ -20,6 +16,7 @@ jobs:
     release:
         name: Release - ${{ matrix.platform.os-name }}
         strategy:
+            fail-fast: false
             matrix:
                 platform:
                     - os-name: Linux-x86_64
@@ -45,8 +42,6 @@ jobs:
                     - os-name: macOS-aarch64
                       runs-on: macos-latest
                       target: aarch64-apple-darwin
-                toolchain:
-                    - stable
         runs-on: ${{ matrix.platform.runs-on }}
         steps:
             - name: Checkout
@@ -57,7 +52,7 @@ jobs:
                   command: build
                   target: ${{ matrix.platform.target }}
                   args: "--locked --release"
-                  strip: true
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Publish artifacts and release
               uses: houseabsolute/actions-rust-release@v0
               with:
@@ -66,9 +61,9 @@ jobs:
                   extra-files: |-
                       example.env
                       README.md
+                  _force-release-for-testing: true
                   action-gh-release-parameters: |
                       {
                           "repository": "NaeCqde/heros-uploader",
-                          "token": "${{ github.token }}"
+                          "token": "${{ secrets.GITHUB_TOKEN }}"
                       }
-              if: matrix.toolchain == 'stable'
