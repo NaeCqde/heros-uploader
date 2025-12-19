@@ -1,17 +1,20 @@
 name: release
 
+permissions:
+    contents: write
+
 on:
-  push:
-    branches:
-      - "**"
-    tags-ignore:
-      - "heros_uploader-*"
-  pull_request:
+    push:
+        branches:
+            - "**"
+        tags-ignore:
+            - "heros_uploader-*"
+    pull_request:
 
 env:
-  CRATE_NAME: heros_uploader
-  GITHUB_TOKEN: ${{ github.token }}
-  RUST_BACKTRACE: 1
+    CRATE_NAME: heros_uploader
+    GITHUB_TOKEN: ${{ github.token }}
+    RUST_BACKTRACE: 1
 
 jobs:
     release:
@@ -43,7 +46,7 @@ jobs:
                       runs-on: macos-latest
                       target: aarch64-apple-darwin
                 toolchain:
-                  - stable
+                    - stable
         runs-on: ${{ matrix.platform.runs-on }}
         steps:
             - name: Checkout
@@ -61,6 +64,6 @@ jobs:
                   executable-name: heros_uploader
                   target: ${{ matrix.platform.target }}
                   extra-files: |-
-                    example.env
-                    README.md
+                      example.env
+                      README.md
               if: matrix.toolchain == 'stable'
