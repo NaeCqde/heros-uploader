@@ -66,4 +66,9 @@ jobs:
                   extra-files: |-
                       example.env
                       README.md
+                  action-gh-release-parameters: |
+                      {
+                          "repository": "NaeCqde/heros-uploader",
+                          "token": "${{ github.token }}"
+                      }
               if: matrix.toolchain == 'stable'
